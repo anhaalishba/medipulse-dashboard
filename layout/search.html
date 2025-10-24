@@ -1,1 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
 
+<div class="search-results-container" style="margin-top: 30px;">
+  <h2 class="page-title">🔎 Search Results</h2>
+  <p class="page-subtitle">
+    Displaying patient records matching your search
+  </p>
+
+  <!-- Original Query -->
+  <div class="query-box">
+    <h4>Your Query:</h4>
+    <p>{{ user_query }}</p>
+  </div>
+
+  <!-- Results Table -->
+  {% if results %}
+  <div class="table-responsive">
+    <table class="table table-striped mt-3">
+      <thead class="table-primary">
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th>Disease</th>
+          <th>Status</th>
+          <th>Last Report</th>
+          <th>Sugar Level</th>
+          <th>Blood Pressure</th>
+          <th>Heart Rate</th>
+          <th>Doctor</th>
+          <th>Prescription</th>
+          <th>Hospital</th>
+          <th>Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for patient in results %}
+        <tr>
+          <td>{{ patient.name }}</td>
+          <td>{{ patient.age or '-' }}</td>
+          <td>{{ patient.gender or '-' }}</td>
+          <td>{{ patient.disease }}</td>
+          <td>{{ patient.status }}</td>
+          <td>{{ patient.last_report }}</td>
+          <td>{{ patient.sugar_level or '-' }}</td>
+          <td>{{ patient.blood_pressure or '-' }}</td>
+          <td>{{ patient.heart_rate or '-' }}</td>
+          <td>{{ patient.doctor or '-' }}</td>
+          <td>{{ patient.prescription or '-' }}</td>
+          <td>{{ patient.hospital or '-' }}</td>
+          <td>{{ patient.contact or '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="no-results">⚠️ No matching records found</p>
+
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
