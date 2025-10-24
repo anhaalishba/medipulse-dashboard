@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediPulse-Data-Driven Care</title>
+  <style>
+    body {
+      background-color: #396d6a;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      margin: 0;
+      overflow: hidden;
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    body.fade-out {
+      opacity: 0;
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .ecg-loader {
+      width: 220px;
+      height: 50px;
+    }
+
+    svg polyline {
+      stroke: #fff;
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <h1>MediPulse</h1>
+  <div class="ecg-loader">
+    <svg viewBox="0 0 100 20">
+      <polyline points="0,10 20,10 25,0 30,20 40,10 100,10">
+        <animate attributeName="stroke-dasharray" from="0,200" to="200,0" dur="2s" repeatCount="indefinite" />
+      </polyline>
+    </svg>
+  </div>
+
+  <footer>💙 Smart Health Analytics for Better Care — Backed by Elastic & Gemini</footer>
+
+  <script >
+
+    // Index.html
+setTimeout(() => {
+    document.body.classList.add('fade-out');
+    setTimeout(() => {
+        window.location.href = "/login";
+    }, 500);
+}, 2000);
+  </script>
+</body>
+</html>
 
