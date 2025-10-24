@@ -1,1 +1,102 @@
+{% extends "layout.html" %}
+{% block content %}
 
+<style>
+    .chat-container {
+        width: 70%;
+    }
+
+    .chat-box {
+        background: #f8f9fa;
+        border-radius: 1rem;
+        padding: 1rem;
+
+    }
+
+    .chat-bubble {
+        max-width: 70%;
+        word-wrap: break-word;
+    }
+
+    .typing {
+        min-height: 1.5rem;
+    }
+
+    .chat-input-form {
+        position: relative;
+        width: 100%;
+    }
+
+    .chat-input-form input {
+        width: 100%;
+        padding-right: 50px;
+       
+    }
+
+    .chat-input-form button {
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .chat-container {
+            max-width: 100%;
+        }
+    }
+</style>
+
+
+
+
+
+<div class="container-fluid py-4 d-flex justify-content-center">
+    <div class="chat-container w-100" style="max-width: 600px;">
+     
+        <div class="container-fluid py-4 d-flex justify-content-center" style="margin-top: -22px;margin-bottom: -20px; ">
+            <div class="chat-container w-100" style="max-width: 600px;">
+                
+                <div class="d-flex justify-content-center mb-4" >
+                    <h2 class="text-white  py-2 px-4 rounded-pill shadow-sm mb-0" style="font-size: 1.6rem;background-color: darkslategray;">
+                        AI Recommendations Chat 💡
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+      
+        <div id="mainChat" class="d-flex flex-column" style="height: 75vh;">
+            <div class="chat-box flex-grow-1 p-3 mb-3 bg-white rounded shadow-sm overflow-auto" id="chatBox">
+                {% for msg in messages %}
+                {% if msg.role == 'user' %}
+                <div class="d-flex justify-content-end mb-2">
+                    <div class="p-2 bg-primary text-white rounded chat-bubble shadow-sm">{{ msg.content }}</div>
+                </div>
+                {% elif msg.role == 'assistant' %}
+                <div class="d-flex justify-content-start mb-2">
+                    <div class="p-2 bg-light text-dark rounded chat-bubble shadow-sm typing"
+                        data-text="{{ msg.content }}"></div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <form method="POST" class="chat-input-form position-relative mt-auto">
+                <input type="text" name="user_input" id="userInput" class="form-control rounded-pill pe-5"
+                    placeholder="Type your question..." style="height: 40px;" required autofocus>
+                <button type="submit"
+                    class="btn btn-primary position-absolute top-0 end-0 rounded-circle d-flex justify-content-center align-items-center"
+                    style="width:36px; height:36px; margin:2px;">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}
