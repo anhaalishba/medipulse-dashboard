@@ -112,8 +112,8 @@ MediPulse-dashboard/
 
 ## 🔗 Links
 
-* **Project Demo Video:** [Insert Video Link]
-* **Live Deployment:** [Insert Deployment Link]
+* **Project Demo Video:** https://youtu.be/poMlmtD6KwU
+* **Live Deployment:** medipulseai.up.railway.app
 
 ---
 
