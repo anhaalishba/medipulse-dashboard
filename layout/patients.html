@@ -1,1 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="dashboard-container" style="padding-top: 10px; margin-top: 30px;">
+  <div class="patients-container">
+    <h2 class="page-title">🩺 Patient Records</h2>
 
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead class="table-primary">
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Disease</th>
+            <th>Status</th>
+            <th>Last Report</th>
+            <th>Sugar Level</th>
+            <th>Blood Pressure</th>
+            <th>Heart Rate</th>
+            <th>Doctor</th>
+            <th>Prescription</th>
+            <th>Hospital</th>
+            <th>Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for patient in patients %}
+          <tr>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.age or '-' }}</td>
+            <td>{{ patient.gender or '-' }}</td>
+            <td>{{ patient.disease }}</td>
+            <td>{{ patient.status }}</td>
+            <td>{{ patient.last_report }}</td>
+            <td>{{ patient.sugar_level or '-' }}</td>
+            <td>{{ patient.blood_pressure or '-' }}</td>
+            <td>{{ patient.heart_rate or '-' }}</td>
+            <td>{{ patient.doctor or '-' }}</td>
+            <td>{{ patient.prescription or '-' }}</td>
+            <td>{{ patient.hospital or '-' }}</td>
+            <td>{{ patient.contact or '-' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
