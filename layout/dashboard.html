@@ -1,1 +1,215 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Header */
+.dashboard-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #2e554e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 100;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.dashboard-wrapper {
+  display: flex;
+  flex: 1;
+  margin-top: 60px; 
+  min-height: calc(100vh - 60px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: linear-gradient(180deg, #2e554ee1, #0e5046e1);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  padding-top: 1rem;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  z-index: 90;
+  transition: transform 0.3s ease;
+  margin-top: -10px;
+}
+
+.sidebar.hide {
+  transform: translateX(-100%);
+}
+
+.sidebar-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar .nav-link {
+  color: #fff;
+  padding: 0.8rem 1rem;
+  margin: 0.2rem 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+
+.dashboard-container {
+  flex: 1;
+  margin-left: 220px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-width: 0;
+  overflow-x: hidden;
+  transition: margin-left 0.3s ease;
+}
+
+
+.card {
+  background-color: #71a19ae1;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.card-grid .card {
+  flex: 1 1 200px;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 70%;
+    max-width: 250px;
+    height: calc(100% - 60px);
+    transform: translateX(-100%);
+    padding-top: 1rem;
+  }
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .dashboard-container {
+    margin-left: 0;
+    padding: 10px 15px;
+  }
+}
+</style>
+
+
+
+<div class="dashboard-wrapper">
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a class="nav-link" href="{{ url_for('profile') }}"><i class="bi bi-person-circle"></i> Profile</a>
+    <a class="nav-link" href="{{ url_for('patients') }}"><i class="bi bi-people"></i> Patients</a>
+    <a class="nav-link" href="{{ url_for('ai_chat') }}"><i class="bi bi-chat-dots"></i> AI Chat</a>
+    <a class="nav-link" href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-container" style="padding-top: 10px; margin-top:-20px;">
+    <h2 class="page-title">👩‍⚕️Welcome to MediPulse — Smarter Care Starts Here</h2>
+    <p class="page-subtitle">Explore and analyze patient data intelligently with AI.</p>
+
+    <form id="searchForm" action="{{ url_for('search_page') }}" method="POST" class="search-bar position-relative w-100" style="max-width: 700px; margin:auto;">
+  <input type="text" name="query" placeholder="Ask anything..." 
+         class="form-control rounded-pill ps-4 pe-5" required style="height: 45px;">
+  <button type="submit" class="position-absolute top-50 end-0 translate-middle-y me-2 btn btn-primary d-flex justify-content-center align-items-center rounded-circle" 
+          style="width:36px; height:36px;">
+      <i class="bi bi-search"></i>
+  </button>
+</form>
+
+
+    <div class="charts-container">
+      {% if gender_chart %}
+      <div class="card chart" style="background-color: #fff;">
+        <h4>📊 Gender Distribution</h4>
+        <img src="data:image/png;base64,{{ gender_chart }}" alt="Gender Chart" style="width:100%;">
+      </div>
+      {% endif %}
+      {% if condition_chart %}
+      <div class="card chart" style="background-color: #fff;">
+        <h4>📊 Disease Frequency</h4>
+        <img src="data:image/png;base64,{{ condition_chart }}" alt="Condition Chart" style="width:100%;">
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Total Patients</h3>
+        <p>{{ total_patients }}</p>
+      </div>
+      <div class="card">
+        <h3>Critical Cases</h3>
+        <p>{{ critical_cases }}</p>
+      </div>
+      <div class="card">
+        <h3>New Records This Week</h3>
+        <p>{{ new_records }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+document.getElementById('searchForm').addEventListener('submit', function() {
+   
+    setTimeout(() => {
+        this.query.value = '';
+    }, 100); 
+});
+</script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+{% endblock %}
 
