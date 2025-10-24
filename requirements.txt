@@ -1,1 +1,6 @@
-
+Flask
+elasticsearch
+python-dotenv
+matplotlib
+langchain-google-genai
+langchain
